@@ -28,3 +28,7 @@ mean(salaries$yrs.since.phd)
 sd(salaries$salary)
 sd(salaries$yrs.service)
 sd(salaries$yrs.since.phd)
+
+skewness(salaries$salary)
+skewness(salaries$yrs.service)
+skewness(salaries$yrs.since.phd)
