@@ -30,5 +30,10 @@ sd(salaries$yrs.service)
 sd(salaries$yrs.since.phd)
 
 skewness(salaries$salary)
+4*sqrt(6/length(salaries$salary))
+
 skewness(salaries$yrs.service)
+4*sqrt(6/length(salaries$yrs.service))
+
 skewness(salaries$yrs.since.phd)
+4*sqrt(6/length(salaries$yrs.since.phd))
