@@ -106,20 +106,18 @@ summary(salarieslm)
 
 
 
+aggregate(salaries[c(salaries$salary,salaries$yrs.since.phd, salaries$yrs.service)],by=list(gender=salaries$sex), mean, na.rm=TRUE)
+aggregate(salaries[c("Salary","Years Since Ph.D", "Years of Service")],mydata["Gender"], mean, na.rm=TRUE)
+aggregate(salaries,by=list(gender=salaries$sex), mean, na.rm=TRUE)
+aggregate(salaries,by=list(gender=salaries$sex, phd=salaries$yrs.since.phd, service=salaries$yrs.service), mean, 
+          na.rm=TRUE)
+aggregate(salaries$salary,by=list(gender=salaries$sex, phd=salaries$yrs.since.phd, service=salaries$yrs.service), mean, 
+          na.rm=TRUE)
+aggregate(salaries[c("Salary")],by=list(gender=salaries$sex, phd=salaries$yrs.since.phd, service=salaries$yrs.service), 
+          mean, na.rm=TRUE)
 
 
 
-
-
-
-
-
-
-
-
-
-
-#multiple regression
 
 
 
