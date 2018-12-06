@@ -52,13 +52,22 @@ counts <- table(salaries$sex)
 barplot(counts, main="Gender",
         xlab="gender")
 
-#single variable statisics
+#single variable descriptive statisics
 mean(salaries$salary)
 var(salaries$salary)
 median(salaries$salary)
 mode(salaries$salary)
 sd(salaries$salary)
 
+#two variable descriptive statistics
+
+
+
+#correlation
+
+#put the two "years" variables into a data frame
+yrs.data <- data.frame(salaries$yrs.service, salaries$yrs.since.phd)
+cor(yrs.data, use = "pairwise.complete.obs", method = "pearson")
 
 
 
