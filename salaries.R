@@ -1,6 +1,24 @@
 #I forgot to note where I got the salaries.csv file from
 #see if I can refind the website
 
+
+library(Rcmdr)
+library(ggm)
+library(QuantPsyc)
+library(Hmisc)
+library(ggplot2)
+library(polycor)
+library(tidyverse)
+library(lattice)
+library(qcc)
+library(dplyr)
+library(e1071)
+library(moments)
+library(pastecs)
+
+
+
+
 #read in the .csv file into R
 salaries <- read.csv("salaries.csv")
 
@@ -69,6 +87,39 @@ sd(salaries$salary)
 yrs.data <- data.frame(salaries$yrs.service, salaries$yrs.since.phd)
 cor(yrs.data, use = "pairwise.complete.obs", method = "pearson")
 
+#simple regression
+salariessincelm<- lm(salary ~ yrs.since.phd, data = salaries)
+salariesincelm
+summary(salariessincelm)
+
+salariesservicelm<- lm(salary ~ yrs.service, data = salaries)
+salarieservicelm
+summary(salariesservicelm)
+
+
+#multiple regression
+salarieslm<- lm(salary ~ yrs.since.phd + yrs.service, data = salaries)
+salarieslm
+summary(salarieslm)
+
+#making the scatterplot
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#multiple regression
 
 
 
