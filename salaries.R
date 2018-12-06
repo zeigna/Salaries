@@ -37,3 +37,31 @@ skewness(salaries$yrs.service)
 
 skewness(salaries$yrs.since.phd)
 4*sqrt(6/length(salaries$yrs.since.phd))
+
+
+# Simple Bar Plot
+counts <- table(salaries$rank)
+barplot(counts, main="Academic Rank",
+        xlab="Rank") 
+
+counts <- table(salaries$discipline)
+barplot(counts, main="Theoretical vs Applied",
+        xlab="Discipline")
+
+counts <- table(salaries$sex)
+barplot(counts, main="Gender",
+        xlab="gender")
+
+#single variable statisics
+mean(salaries$salary)
+var(salaries$salary)
+median(salaries$salary)
+mode(salaries$salary)
+sd(salaries$salary)
+
+
+
+
+
+
+
