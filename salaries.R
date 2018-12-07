@@ -25,6 +25,77 @@ salaries <- read.csv("salaries.csv")
 #display the data and examine it
 salaries
 
+#number of rows and number of columns in the datset, respectively
+nrow(salaries)
+ncol(salaries)
+
+#a listing of the names of the columns
+colnum(salaries)
+
+#information about the data structure for 
+#quick look at data and how it is organized
+str(salaries)
+
+#summary of the variables in the dataset
+#(including descriptive stats for numerical variables)
+summary(salaries)
+
+#mean and standard deviation for the numerical columns
+mean(salaries$salary)
+mean(salaries$yrs.service)
+mean(salaries$yrs.since.phd)
+
+sd(salaries$salary)
+sd(salaries$yrs.service)
+sd(salaries$yrs.since.phd)
+
+#using gglot to make scatterplots
+library(tidyverse)
+sc <- ggplot(salaries)
+sc <- ggplot(salaries, aes(yrs.service, salary))
+sc + geom_point()
+
+
+#facet allow you to break down the overall graph 
+#into separate graphs based on a discrete/categorical variable
+#like gender
+
+sc <- ggplot(salaries)
+sc <- ggplot(salaries, aes(yrs.service, salary))
+sc + geom_point()
+sc + geom_point() + facet_grid(sex~.)
+
+
+sc <- ggplot(salaries, aes(yrs.since.phd, salary))
+sc + geom_point()
+
+ 
+sc <- ggplot(salaries, aes(yrs.since.phd, salary))
+sc + geom_point()
+sc + geom_point() + facet_grid(sex~.)
+
+
+
+
+sc <- ggplot(salaries, aes(yrs.since.phd, yrs.service))
+sc + geom_point()
+ 
+sc <- ggplot(salaries, aes(yrs.since.phd,yrs.service))
+sc + geom_point()
+sc + geom_point() + facet_grid(sex~.)
+
+
+#histograms (and its layers) using ggplot2
+hist <- ggplot(salaries, aes(x = salary))
+hist + geom_histogram()
+
+hist <- ggplot(salaries, aes(x = salary))
+hist + geom_histogram(binwidth = 25000, color = "darkslategray", fill = "darkslategray4") + ggtitle("Salary Distribution of Professors") + labs(y = "Number of Professors", x = "Salary") + theme_minimal()
+
+
+
+
+
 #make a two-way table with row and column sums
 T <- table(salaries$rank, salaries$sex)
 addmargins(T, c(1, 2))
@@ -104,6 +175,18 @@ summary(salarieslm)
 
 #making the scatterplot
 
+
+#summary statsitics
+salaries <- read.csv("salaries.csv")
+summary(salaries)
+
+#number of columns and number of rows
+ncol(salaries)
+nrow(salaries)
+
+#names of the columns (does not really make sense to get a list of the names of the rows)
+colnames(salaries)
+#rownames(salaries)
 
 
 aggregate(salaries[c(salaries$salary,salaries$yrs.since.phd, salaries$yrs.service)],by=list(gender=salaries$sex), mean, na.rm=TRUE)
