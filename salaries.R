@@ -1,20 +1,13 @@
 #I forgot to note where I got the salaries.csv file from
 #see if I can refind the website
 
+# working google sites link:  https://sites.google.com/s/1h_Tb6dwLKJR_jY4kApzYVmqW3-lj-N51/p/1OPJZQLSQ3X3xkZnGJCfqg4gOocnp8gej/edit
 
-library(Rcmdr)
-library(ggm)
-library(QuantPsyc)
-library(Hmisc)
-library(ggplot2)
-library(polycor)
-library(tidyverse)
-library(lattice)
-library(qcc)
-library(dplyr)
-library(e1071)
-library(moments)
-library(pastecs)
+# Google sites published at: https://sites.google.com/view/data-analysis-with-r/home
+
+# Github username:  zeigna
+
+#Github repo:  https://github.com/zeigna/Salaries
 
 
 
@@ -124,18 +117,130 @@ box <- ggplot(salaries, aes(x = sex, y = salary))
 box + geom_boxplot() + labs(title = "Salary by Gender") + theme_light()
 
 box <- ggplot(salaries, aes(x = rank, y = salary))
-box + geom_boxplot() + labs(title = "Salary by Academic Rank") + theme_light() + geom_jitter(width = 0.2, aes (color = sex) )
+box + geom_boxplot(outlier.color = "red", outlier.shape = 4) + labs(title = "Salary by Academic Rank") + theme_light() + geom_jitter(width = 0.2, aes (color = sex) )
+
+
+#making scatterplots with ggplot
+
+salsc <- ggplot(salaries, aes(yrs.since.phd, salary))
+salsc + geom_point(aes(color = sex)) + theme_light() + labs(x = "Years Since Ph.D", y = "Professor's Salary", title = "Relationship between Years Since Ph.D. and Salary") + stat_smooth()
+
+
+salsc <- ggplot(salaries, aes(yrs.service, salary))
+salsc + geom_point(aes(color = sex)) + theme_light() + labs(x = "Years of Service", y = "Professor's Salary", title = "Relationship between Years of Service. and Salary") + stat_smooth()
+
+
+salsc <- ggplot(salaries, aes(yrs.since.phd, yrs.service))
+salsc + geom_point(aes(color = sex)) + theme_light() + labs(x = "Years Since Ph.D", y = "Years of Service", title = "Relationship between Years Since Ph.D. and Years of Service") + stat_smooth(se = FALSE)
+
+#for fun and giggles :-)
+
+salsc <- ggplot(salaries, aes(yrs.since.phd, yrs.service))
+salsc + geom_point(aes(color = sex), shape = 21, fill = "white", size = 3, stroke = 2) + theme_light() + labs(x = "Years Since Ph.D", y = "Years of Service", title = "Relationship between Years Since Ph.D. and Years of Service")
+
+
+#correlations 
+
+cor(salaries$yrs.service, salaries$salary)
+(cor(salaries$yrs.service, salaries$salary))^2
+cor.test(salaries$yrs.service, salaries$salary)
+
+cor(salaries$yrs.since.phd, salaries$salary)
+(cor(salaries$yrs.since.phd, salaries$salary))^2
+cor.test(salaries$yrs.since.phd, salaries$salary)
+
+cor(salaries$yrs.since.phd, salaries$yrs.service)
+(cor(salaries$yrs.since.phd, salaries$yrs.service))^2
+cor.test(salaries$yrs.since.phd, salaries$yrs.service)
+
+
+#select (subset) only males so I can do a t-test
+#on male full professors in applied disciplines compared to
+#male full professors in theoretical disciplines
+
+sex <- salaries$sex
+discip <- salaries$discipline
+salary <- salaries$salary
+rank <- salaries$rank
+newdata <- data.frame(sex, discip, rank, salary)
+#newdata includes BOTH genders and all three ranks currently
+males.data1 <- subset(newdata, sex == "Male")
+males.data <- subset(males.data1, rank != "AssocProf"|rank != "AsstProf")
+
+#having difficulty filtering out AsstProf and AssocProf to get only 
+#Prof data so I hit this site:
+# https://blog.exploratory.io/filter-with-text-data-952df792c2ba
+
+library(stringr)
+
+males.data <- males.data1[!grepl("Ass", males.data1$rank),]
+#finally!! only took over an hour :-) 
+# https://stackoverflow.com/questions/22249702/delete-rows-containing-specific-strings-in-r
+
+#independent measures t-test
+ind.t.test <- t.test(salary~discip, data = males.data, mu = 0)
+ind.t.test
+
+
+#correlation
+
+#put the two "years" variables into a data frame
+yrs.data <- data.frame(salaries$yrs.service, salaries$yrs.since.phd)
+cor(yrs.data, use = "pairwise.complete.obs", method = "pearson")
+
+yrs.data <- data.frame(salaries$yrs.service, salaries$yrs.since.phd, salaries$salary)
+cor(yrs.data, use = "pairwise.complete.obs", method = "pearson")
+#it makes a matrix of all three variables -- YAY!!!!
+
+
+#simple regression
+salariessincelm<- lm(salary ~ yrs.since.phd, data = salaries)
+salariesincelm
+summary(salariessincelm)
+
+salariesservicelm<- lm(salary ~ yrs.service, data = salaries)
+salarieservicelm
+summary(salariesservicelm)
+
+
+#multiple regression
+salarieslm<- lm(salary ~ yrs.since.phd + yrs.service, data = salaries)
+salarieslm
+summary(salarieslm)
 
 
 
 
 
+
+
+
+
+
+library(Rcmdr)
+library(ggm)
+library(QuantPsyc)
+library(Hmisc)
+library(ggplot2)
+library(polycor)
+library(tidyverse)
+library(lattice)
+library(qcc)
+library(dplyr)
+library(e1071)
+library(moments)
+library(pastecs)
+
+#I did not use most of these but need to check them out more :-)
 
 
 
 
 #make a two-way table with row and column sums
 T <- table(salaries$rank, salaries$sex)
+addmargins(T, c(1, 2))
+
+T <- table(salaries$discipline, salaries$sex)
 addmargins(T, c(1, 2))
 
 
@@ -190,28 +295,9 @@ sd(salaries$salary)
 
 
 
-#correlation
-
-#put the two "years" variables into a data frame
-yrs.data <- data.frame(salaries$yrs.service, salaries$yrs.since.phd)
-cor(yrs.data, use = "pairwise.complete.obs", method = "pearson")
-
-#simple regression
-salariessincelm<- lm(salary ~ yrs.since.phd, data = salaries)
-salariesincelm
-summary(salariessincelm)
-
-salariesservicelm<- lm(salary ~ yrs.service, data = salaries)
-salarieservicelm
-summary(salariesservicelm)
 
 
-#multiple regression
-salarieslm<- lm(salary ~ yrs.since.phd + yrs.service, data = salaries)
-salarieslm
-summary(salarieslm)
-
-#making the scatterplot
+#making the scatterplot not using ggplot
 
 
 #summary statsitics
