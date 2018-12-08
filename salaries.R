@@ -92,6 +92,44 @@ hist + geom_histogram()
 hist <- ggplot(salaries, aes(x = salary))
 hist + geom_histogram(binwidth = 25000, color = "darkslategray", fill = "darkslategray4") + ggtitle("Salary Distribution of Professors") + labs(y = "Number of Professors", x = "Salary") + theme_minimal()
 
+hist <- ggplot(salaries, aes(x = yrs.service))
+hist + geom_histogram(binwidth = 10, color = "darkslategray", fill = "darkslategray4") + ggtitle("Years of Service") + labs(y = "Number of Professors", x = "Years of Service") + theme_minimal()
+
+
+hist <- ggplot(salaries, aes(x = yrs.since.phd))
+hist + geom_histogram(binwidth = 10, color = "darkslategray", fill = "darkslategray4") + ggtitle("Years since Professor Earned Ph.D.") + labs(y = "Number of Professors", x = "Years Since Ph.D") + theme_minimal()
+
+#make bar chart with ggplot
+bar <- ggplot(salaries, aes(x = sex, fill = rank))
+bar + geom_bar() + theme_light() + labs(y = "Number of Professors", title = "Academic Rank")
+
+bar <- ggplot(salaries, aes(x = rank, fill = sex))
+bar + geom_bar() + theme_light() + labs(y = "Number of Professors", title = "Academic Rank")
+
+bar <- ggplot(salaries, aes(x = yrs.since.phd, fill = sex))
+bar + geom_bar() + theme_light() + labs(y = "Number of Professors", title = "AYears Since Ph.D.")
+
+bar <- ggplot(salaries, aes(x = yrs.service, fill = sex))
+bar + geom_bar() + theme_light() + labs(y = "Number of Professors", title = "Years of Service")
+
+bar <- ggplot(salaries, aes(x = sex, fill = discipline))
+bar + geom_bar() + theme_light() + labs(y = "Number of Professors", x = "Gender", title = "Gender breakdown by Discpline and Rank") + facet_wrap(~ rank)
+
+bar <- ggplot(salaries, aes(x = discipline, fill = sex))
+bar + geom_bar() + theme_light() + labs(y = "Number of Professors", title = "Years of Service")
+
+#making boxplots with ggplot
+
+box <- ggplot(salaries, aes(x = sex, y = salary))
+box + geom_boxplot() + labs(title = "Salary by Gender") + theme_light()
+
+box <- ggplot(salaries, aes(x = rank, y = salary))
+box + geom_boxplot() + labs(title = "Salary by Academic Rank") + theme_light() + geom_jitter(width = 0.2, aes (color = sex) )
+
+
+
+
+
 
 
 
